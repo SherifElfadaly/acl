@@ -4,11 +4,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
+import { Role } from 'src/roles/entities/role.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -30,6 +33,9 @@ export class User {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  @ManyToMany(() => Role, role => role.users)
+  roles: Role[];
 
   @BeforeInsert()
   async setPassword(password: string) {
