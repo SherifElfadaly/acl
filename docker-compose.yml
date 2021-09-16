@@ -1,8 +1,8 @@
 version: '3.2'
 
 services:
-    courses_mysql:
-      container_name: 'courses_mysql'
+    acl_mysql:
+      container_name: 'acl_mysql'
       image: mysql:5.7
       volumes:
         - ./run/var:/var/lib/mysql
@@ -14,23 +14,14 @@ services:
       ports:
         - "${MYSQL_EXTERNAL_PORT}:${DB_PORT}"
       restart: always
-
-    courses_redis:
-      container_name: 'courses_redis'
-      image: redis:alpine
-      ports:
-        - "${REDIS_EXTERNAL_PORT}:${REDIS_PORT}"
-      restart: always
       
-    courses_app:
-      container_name: 'courses'
+    acl_app:
+      container_name: 'acl'
       build: .
       links:
-        - "courses_mysql"
-        - "courses_redis"
+        - "acl_mysql"
       depends_on:
-        - "courses_mysql"
-        - "courses_redis"
+        - "acl_mysql"
       ports:
         - "${APP_EXTERNAL_PORT}:${APP_PORT}"
       restart: always
